@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- 
     DISCO FRESA 🍓 by Carlos Sánchez Sanz
-    Versión: 4.2 Móvil - Ultra simple
+    Versión: 4.3 Final
 -->
 <html lang="es">
 <head>
@@ -11,40 +11,31 @@
     <link rel="stylesheet" href="css/styles.css">
     <style>
         /* ============================================
-           MÓVIL - Sin controles, solo lo esencial
+           MÓVIL
            ============================================ */
         @media (max-width: 768px) {
-            /* Reset para móvil */
             body {
                 background: white;
                 padding: 0;
                 margin: 0;
-                display: block;
             }
 
             .consola-general {
                 width: 100vw;
                 height: 100vh;
-                max-width: 100%;
-                max-height: 100%;
                 background: white;
-                padding: 0;
-                margin: 0;
-                border-radius: 0;
                 display: flex;
                 flex-direction: column;
-                overflow: hidden;
                 position: fixed;
                 top: 0;
                 left: 0;
                 grid-template-columns: 1fr !important;
+                padding: 0 !important;
+                gap: 0 !important;
             }
 
-            /* Ocultar todo lo que no sea el plato 1 */
             .consola[data-plato="2"],
             .consola-maleta,
-            #cuadradoPortadaPrincipal,
-            #cuadradoInfoAlbum,
             .controles-consola,
             .dual-control,
             .control-group,
@@ -52,34 +43,28 @@
                 display: none !important;
             }
 
-            /* Plato 1 visible y compacto */
             .consola[data-plato="1"] {
                 display: flex !important;
                 flex-direction: column;
                 background: white;
-                padding: 10px;
-                height: auto;
+                padding: 15px 10px 5px 10px;
                 flex: 0 0 auto;
             }
 
-            /* Info track */
             .info-track-consola {
-                font-size: 12px;
-                padding: 6px 10px;
-                margin-bottom: 8px;
+                font-size: 13px;
+                padding: 6px 12px;
+                margin-bottom: 10px;
                 background: #f0f0f0;
                 border-radius: 20px;
-                text-align: center;
             }
 
-            /* Plato tamaño proporcional */
             .plato {
-                width: min(40vw, 40vh);
-                height: min(40vw, 40vh);
+                width: min(45vw, 45vh);
+                height: min(45vw, 45vh);
                 margin: 0 auto 10px auto;
             }
 
-            /* Botones más pequeños */
             .boton-superior {
                 width: 40px !important;
                 height: 40px !important;
@@ -92,92 +77,53 @@
                 font-size: 11px;
             }
 
-            /* Barra de progreso visible */
             .progress-container {
                 display: block !important;
-                margin: 5px auto 10px auto;
+                margin: 5px auto 15px auto;
                 width: 90%;
             }
 
-            .progress-bar {
-                height: 4px;
-            }
-
-            .progress-time {
-                font-size: 10px;
-            }
-
-            /* Pestaña */
-            .movil-tab {
-                display: flex !important;
-                justify-content: center;
-                align-items: center;
-                background: #f0f0f0;
-                padding: 8px 0;
-                cursor: pointer;
-                font-size: 18px;
-                color: #666;
-                width: 100%;
-                border-top: 1px solid #ddd;
-                border-bottom: 1px solid #ddd;
-                flex: 0 0 auto;
-            }
-
-            /* Contenedor de la lista */
             #movilSongList {
                 flex: 1 1 auto;
                 overflow-y: auto;
                 padding: 10px;
-                background: white;
-                -webkit-overflow-scrolling: touch;
+                background: #f5f5f5;
+                border-top: 1px solid #ddd;
             }
 
-            /* Items de la lista */
             .song-item {
+                background: white !important;
                 padding: 8px !important;
                 margin: 5px 0 !important;
-            }
-
-            .song-number {
-                width: 24px !important;
-                height: 24px !important;
-                font-size: 11px !important;
-            }
-
-            .song-item img {
-                width: 35px !important;
-                height: 35px !important;
-            }
-
-            /* Modal colecciones - 2 columnas */
-            #discosGrid {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 10px !important;
+                border-radius: 8px !important;
             }
         }
 
         /* ============================================
-           ESCRITORIO - Todo normal
+           ESCRITORIO
            ============================================ */
         @media (min-width: 769px) {
-            .movil-tab,
             #movilSongList {
                 display: none !important;
             }
-            
+
             .consola-maleta {
                 display: block !important;
             }
-            
+
             .consola[data-plato="2"] {
                 display: block !important;
+            }
+
+            .consola[data-plato="1"] .controles-consola {
+                display: none !important;
             }
         }
     </style>
 </head>
 <body>
     <div class="consola-general">
-        <!-- CONSOLA 1 (única visible en móvil) -->
+        <!-- CONSOLA 1 (sin controles) -->
         <div class="consola" data-plato="1">
             <div class="info-track-consola" id="infoTrack1">
                 <span class="sin-cargar">❌ Sin disco</span>
@@ -200,7 +146,6 @@
                 </div>
             </div>
             
-            <!-- Barra de progreso -->
             <div class="progress-container">
                 <div class="progress-bar" id="progress-bar1">
                     <div class="progress-fill" id="progress-fill1"></div>
@@ -212,17 +157,14 @@
             </div>
         </div>
 
-        <!-- PESTAÑA MÓVIL -->
-        <div class="movil-tab" id="movilTab">▼</div>
-
-        <!-- LISTA DE CANCIONES MÓVIL -->
+        <!-- LISTA MÓVIL -->
         <div id="movilSongList">
             <div style="text-align: center; color: #999; padding: 20px;">
                 📀 Arrastra archivos para comenzar
             </div>
         </div>
         
-        <!-- CONSOLA 2 (escritorio) -->
+        <!-- CONSOLA 2 (con todos los controles) -->
         <div class="consola" data-plato="2">
             <div class="info-track-consola" id="infoTrack2">
                 <span class="sin-cargar">❌ Sin disco</span>
@@ -255,33 +197,33 @@
                 </div>
             </div>
             
-            <!-- Controles completos para escritorio -->
+            <!-- Controles completos solo para plato 2 -->
             <div class="controles-consola">
                 <div class="dual-control">
                     <div class="control-half">
                         <div class="control-header">
                             <span>GANANCIA</span>
-                            <span class="valor" id="gain1-val">0.0</span>
+                            <span class="valor" id="gain2-val">0.0</span>
                         </div>
                         <div class="slider-container">
                             <div class="slider-track">
-                                <div class="slider-fill" id="gain1-fill"></div>
+                                <div class="slider-fill" id="gain2-fill"></div>
                                 <div class="slider-center-marker"></div>
                             </div>
-                            <input type="range" id="gain1" min="-12" max="12" value="0" step="0.5">
+                            <input type="range" id="gain2" min="-12" max="12" value="0" step="0.5">
                         </div>
                     </div>
                     
                     <div class="control-half">
                         <div class="control-header">
                             <span>VOLUMEN</span>
-                            <span class="valor" id="vol1-val">70</span>
+                            <span class="valor" id="vol2-val">70</span>
                         </div>
                         <div class="slider-container">
                             <div class="slider-track">
-                                <div class="slider-fill" id="vol1-fill"></div>
+                                <div class="slider-fill" id="vol2-fill"></div>
                             </div>
-                            <input type="range" id="vol1" min="0" max="100" value="70" step="1">
+                            <input type="range" id="vol2" min="0" max="100" value="70" step="1">
                         </div>
                     </div>
                 </div>
@@ -293,36 +235,36 @@
                             <div class="frecuencia">LOW</div>
                             <div class="slider-container">
                                 <div class="slider-track">
-                                    <div class="slider-fill" id="eq1-low-fill"></div>
+                                    <div class="slider-fill" id="eq2-low-fill"></div>
                                     <div class="slider-center-marker"></div>
                                 </div>
-                                <input type="range" id="eq1-low" min="-12" max="12" value="0" step="0.5">
+                                <input type="range" id="eq2-low" min="-12" max="12" value="0" step="0.5">
                             </div>
-                            <div class="valor" id="eq1-low-val">0.0</div>
+                            <div class="valor" id="eq2-low-val">0.0</div>
                         </div>
                         
                         <div class="eq-band">
                             <div class="frecuencia">MID</div>
                             <div class="slider-container">
                                 <div class="slider-track">
-                                    <div class="slider-fill" id="eq1-mid-fill"></div>
+                                    <div class="slider-fill" id="eq2-mid-fill"></div>
                                     <div class="slider-center-marker"></div>
                                 </div>
-                                <input type="range" id="eq1-mid" min="-12" max="12" value="0" step="0.5">
+                                <input type="range" id="eq2-mid" min="-12" max="12" value="0" step="0.5">
                             </div>
-                            <div class="valor" id="eq1-mid-val">0.0</div>
+                            <div class="valor" id="eq2-mid-val">0.0</div>
                         </div>
                         
                         <div class="eq-band">
                             <div class="frecuencia">HIGH</div>
                             <div class="slider-container">
                                 <div class="slider-track">
-                                    <div class="slider-fill" id="eq1-high-fill"></div>
+                                    <div class="slider-fill" id="eq2-high-fill"></div>
                                     <div class="slider-center-marker"></div>
                                 </div>
-                                <input type="range" id="eq1-high" min="-12" max="12" value="0" step="0.5">
+                                <input type="range" id="eq2-high" min="-12" max="12" value="0" step="0.5">
                             </div>
-                            <div class="valor" id="eq1-high-val">0.0</div>
+                            <div class="valor" id="eq2-high-val">0.0</div>
                         </div>
                     </div>
                 </div>
@@ -330,20 +272,20 @@
                 <div class="control-group">
                     <div class="control-header">
                         <span>PITCH</span>
-                        <span class="valor" id="pitch1-val">0</span>
+                        <span class="valor" id="pitch2-val">0</span>
                     </div>
                     <div class="slider-container">
                         <div class="slider-track">
-                            <div class="slider-fill" id="pitch1-fill"></div>
+                            <div class="slider-fill" id="pitch2-fill"></div>
                             <div class="slider-center-marker"></div>
                         </div>
-                        <input type="range" id="pitch1" min="0.90" max="1.10" step="0.001" value="1.0">
+                        <input type="range" id="pitch2" min="0.90" max="1.10" step="0.001" value="1.0">
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- MALETA (escritorio) -->
+        <!-- MALETA -->
         <div class="consola-maleta">
             <div class="maleta-titulo">🍓 DISCO FRESA</div>
             
@@ -352,7 +294,6 @@
             
             <div class="modo-selector-container">
                 <span class="modo-label">Manual</span>
-                
                 <div id="selectorModoContainer" class="modo-switch">
                     <div class="modo-track"></div>
                     <div id="selectorModoFill" class="modo-fill"></div>
@@ -360,18 +301,13 @@
                     <div id="selectorModoThumb" class="modo-thumb"></div>
                     <input type="range" id="selectorModoRange" min="0" max="1" value="0" step="1">
                 </div>
-                
                 <span class="modo-label">Auto</span>
             </div>
             
             <div class="maleta-footer">
-                <div>🍓 <strong>DISCO FRESA</strong> v4.2</div>
+                <div>🍓 <strong>DISCO FRESA</strong> v4.3</div>
                 <div>by Carlos Sánchez Sanz</div>
-                <div>
-                    <a href="https://github.com/carlospixie-max" target="_blank">GitHub: @carlospixie-max</a>
-                </div>
                 <div>carlospixie@gmail.com</div>
-                <div class="fecha">1 de marzo de 2026</div>
             </div>
         </div>
     </div>
@@ -398,26 +334,19 @@
     <script>
         (function() {
             if (window.innerWidth <= 768) {
-                const tab = document.getElementById('movilTab');
                 const songList = document.getElementById('movilSongList');
                 
-                if (tab && songList) {
-                    // Integrar con biblioteca.js
-                    if (window.biblioteca) {
-                        const originalUpdate = window.biblioteca.actualizarLista;
-                        window.biblioteca.actualizarLista = function() {
-                            originalUpdate.call(this);
-                            const originalList = document.getElementById('songListBiblioteca');
-                            if (originalList && originalList.children.length > 0) {
-                                songList.innerHTML = originalList.innerHTML;
-                            } else {
-                                songList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">📀 Arrastra archivos para comenzar</div>';
-                            }
-                        };
-                    }
-                    
-                    // La pestaña ya no hace nada, la lista siempre visible
-                    tab.style.display = 'none';
+                if (window.biblioteca && songList) {
+                    const originalUpdate = window.biblioteca.actualizarLista;
+                    window.biblioteca.actualizarLista = function() {
+                        originalUpdate.call(this);
+                        const originalList = document.getElementById('songListBiblioteca');
+                        if (originalList && originalList.children.length > 0) {
+                            songList.innerHTML = originalList.innerHTML;
+                        } else {
+                            songList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">📀 Arrastra archivos para comenzar</div>';
+                        }
+                    };
                 }
             }
         })();
