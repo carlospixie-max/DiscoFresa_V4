@@ -1,0 +1,722 @@
+/* ============================================
+   DISCO FRESA - Estilos generales
+   ============================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+body {
+    background: #1a1a1a;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+}
+
+/* ============================================
+   Layout principal
+   ============================================ */
+
+.consola-general {
+    background: white;
+    padding: 20px;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    max-width: 1600px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(400px, 1fr) minmax(400px, 1fr) minmax(400px, 1fr);
+    gap: 20px;
+    align-items: start;
+}
+
+/* ============================================
+   Consola individual (platos)
+   ============================================ */
+
+.consola {
+    background: #fafafa;
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+    border: 1px solid #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info-track-consola {
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+    background: #f0f0f0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    text-align: center;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    word-break: break-all;
+}
+
+.sin-cargar {
+    color: #aaa;
+    font-style: italic;
+}
+
+/* ============================================
+   Plato y disco
+   ============================================ */
+
+.plato {
+    aspect-ratio: 1/1;
+    background: #111;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    border: 2px solid #333;
+    margin-bottom: 0;
+}
+
+.disco {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #222;
+    position: relative;
+    animation: girar 1.8s linear infinite;
+    animation-play-state: paused;
+}
+
+.disco.girando {
+    animation-play-state: running;
+}
+
+@keyframes girar {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.disco .label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35%;
+    height: 35%;
+    background: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #333;
+    border: 2px solid #ccc;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.disco .label img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.disco .linea {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 32.5%;
+    height: 2px;
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-50%);
+    z-index: 5;
+}
+
+.disco .linea2 {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 32.5%;
+    background: rgba(255,255,255,0.3);
+    transform: translateX(-50%);
+    z-index: 5;
+}
+
+.disco::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 32.5%;
+    height: 2px;
+    background: rgba(255,255,255,0.3);
+    transform: translateY(-50%);
+    z-index: 5;
+}
+
+.disco::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    height: 32.5%;
+    background: rgba(255,255,255,0.3);
+    transform: translateX(-50%);
+    z-index: 5;
+}
+
+/* ============================================
+   Botones del plato
+   ============================================ */
+
+.plato-botones {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 100;
+}
+
+.boton-plato {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #ff9900;
+    border: 2px solid #cc7700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    pointer-events: auto;
+    color: white;
+    z-index: 101;
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-word;
+    padding: 4px;
+}
+
+.boton-plato.play.reproduciendo {
+    background: #ffd700;
+    border-color: #b8860b;
+    color: black;
+}
+
+.boton-plato.stop {
+    background: #ff9900;
+    border-color: #cc7700;
+    color: white;
+    transition: background-color 9s linear;
+}
+
+.boton-plato.stop.parando {
+    background: #ffd700;
+    border-color: #b8860b;
+}
+
+.boton-superior {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #f0f0f0;
+    border: 2px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #666;
+    z-index: 102;
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-word;
+    padding: 4px;
+}
+
+.boton-superior:hover {
+    background: #333;
+    color: white;
+    border-color: #333;
+}
+
+/* ============================================
+   Punto de progreso en el disco
+   ============================================ */
+
+.disco-progress-container {
+    position: absolute;
+    top: 50%;
+    left: 69%;
+    width: 30%;
+    height: 40px;
+    transform: translateY(-50%);
+    z-index: 2000;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.disco-progress-point {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #ffd700;
+    border-radius: 50%;
+    top: 50%;
+    margin-top: -7px;
+    pointer-events: none;
+    transition: transform 0.1s ease;
+    right: 0;
+    transform: translateX(50%);
+    left: auto;
+}
+
+.disco-progress-container:hover .disco-progress-point {
+    transform: translateX(50%) scale(1.2);
+}
+
+.disco-progress-container.dragging {
+    cursor: grabbing;
+}
+
+.disco-progress-container.dragging .disco-progress-point {
+    transform: translateX(50%) scale(1.3);
+    background: #ffec8b;
+}
+
+/* ============================================
+   Controles (sliders)
+   ============================================ */
+
+.controles-consola {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.control-group {
+    background: #f5f5f5;
+    border-radius: 16px;
+    padding: 12px;
+}
+
+.control-header {
+    font-size: 10px;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.dual-control {
+    display: flex;
+    gap: 10px;
+}
+
+.dual-control .control-half {
+    flex: 1;
+}
+
+.slider-container {
+    position: relative;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    margin: 4px 0;
+}
+
+.slider-track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background: #ddd;
+    border-radius: 10px;
+}
+
+/* Fill base */
+.slider-fill {
+    position: absolute;
+    height: 100%;
+    background: #666;
+    border-radius: 10px;
+}
+
+.slider-center-marker {
+    position: absolute;
+    left: 50%;
+    top: -5px;
+    width: 2px;
+    height: 14px;
+    background: #999;
+    transform: translateX(-50%);
+    border-radius: 1px;
+}
+
+input[type=range] {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    -webkit-appearance: none;
+    background: transparent;
+    z-index: 10;
+    margin: 0;
+    padding: 0;
+    top: -13px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: #444;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-top: -7px;
+}
+
+.valor {
+    min-width: 35px;
+    font-size: 10px;
+    color: #666;
+    font-family: monospace;
+    text-align: right;
+}
+
+/* ============================================
+   Sliders específicos por tipo - CORREGIDO
+   ============================================ */
+
+/* VOLUMEN: va de izquierda (0%) a derecha, ancho según valor */
+#vol1-fill,
+#vol2-fill {
+    left: 0%;
+    width: 70%;
+}
+
+/* GANANCIA: centrado, en 0 tiene width 0 */
+#gain1-fill,
+#gain2-fill {
+    left: 50%;
+    width: 0%;
+}
+
+/* EQ (Low, Mid, High): centrado, en 0 tiene width 0 */
+#eq1-low-fill,
+#eq1-mid-fill,
+#eq1-high-fill,
+#eq2-low-fill,
+#eq2-mid-fill,
+#eq2-high-fill {
+    left: 50%;
+    width: 0%;
+}
+
+/* PITCH: centrado, en 0 tiene width 0 */
+#pitch1-fill,
+#pitch2-fill {
+    left: 50%;
+    width: 0%;
+}
+
+/* ============================================
+   EQ específico
+   ============================================ */
+
+.eq-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.eq-band {
+    flex: 1;
+    text-align: center;
+}
+
+.eq-band .frecuencia {
+    font-size: 10px;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.pitch-info {
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+    margin: 5px 0;
+}
+
+/* ============================================
+   Barra de progreso
+   ============================================ */
+
+.progress-container {
+    margin: 5px auto 15px auto;
+    width: 90%;
+    max-width: 280px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #666;
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.progress-time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #888;
+    font-family: monospace;
+    margin-top: 4px;
+}
+
+/* ============================================
+   Consola Maleta (centro)
+   ============================================ */
+
+.consola-maleta {
+    background: #f5f5f5;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    width: 100%;
+}
+
+.maleta-titulo {
+    font-size: 14px;
+    color: #ff4444;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+}
+
+.file-input-hidden {
+    display: none;
+}
+
+/* Selector modo Manual/Auto */
+.modo-selector-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 15px 0 10px 0;
+}
+
+.modo-label {
+    font-size: 10px;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.modo-switch {
+    position: relative;
+    width: 40px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.modo-track {
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    background: #ddd;
+    border-radius: 10px;
+    top: 13px;
+}
+
+.modo-fill {
+    position: absolute;
+    height: 4px;
+    background: #666;
+    border-radius: 10px;
+    width: 50%;
+    left: 0;
+    top: 13px;
+}
+
+.modo-center {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    width: 2px;
+    height: 14px;
+    background: #999;
+    transform: translateX(-50%);
+    border-radius: 1px;
+}
+
+.modo-thumb {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: #444;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    top: 6px;
+    left: 0;
+    transform: translateX(-50%);
+    cursor: pointer;
+    transition: left 0.1s ease;
+    z-index: 5;
+}
+
+.modo-switch input[type=range] {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Footer */
+.maleta-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    font-size: 10px;
+    color: #888;
+}
+
+.maleta-footer div {
+    margin-bottom: 2px;
+}
+
+.maleta-footer a {
+    color: #666;
+    text-decoration: none;
+    border-bottom: 1px dotted #999;
+}
+
+.maleta-footer .fecha {
+    margin-top: 6px;
+    font-size: 9px;
+    color: #aaa;
+}
+
+/* ============================================
+   Biblioteca (generada dinámicamente)
+   ============================================ */
+
+#bibliotecaMusical {
+    margin: 15px 0;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+#dropAreaBiblioteca {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    background: white;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+#dropAreaBiblioteca:hover {
+    background: #ffe0b0;
+    border-color: #ff6600;
+}
+
+#songListBiblioteca {
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 400px;
+    min-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    width: 100%;
+    min-width: 0;
+}
+
+.song-item {
+    background: #f8f9fa;
+    padding: 8px;
+    margin: 6px 0;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    display: flex;
+    align-items: center;
+    cursor: move;
+    gap: 8px;
+}
+
+.song-item.actual .song-number {
+    background: #ffd700 !important;
+}
+
+.song-item.reserva .song-number {
+    background: #ffaa00 !important;
+}
+
+.song-number {
+    width: 24px;
+    height: 24px;
+    background: #ff9900;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+/* Audio oculto */
+audio {
+    display: none;
+}
