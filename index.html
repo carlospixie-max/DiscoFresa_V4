@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- 
     DISCO FRESA 🍓 by Carlos Sánchez Sanz
-    Versión: 4.1 Móvil - Simple y fijo
+    Versión: 4.2 Móvil - Ultra simple
 -->
 <html lang="es">
 <head>
@@ -11,29 +11,17 @@
     <link rel="stylesheet" href="css/styles.css">
     <style>
         /* ============================================
-           RESET MÓVIL - Dimensiones fijas
-           ============================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background: #1a1a1a;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 0;
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        /* ============================================
-           MÓVIL (única vista)
+           MÓVIL - Sin controles, solo lo esencial
            ============================================ */
         @media (max-width: 768px) {
+            /* Reset para móvil */
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+                display: block;
+            }
+
             .consola-general {
                 width: 100vw;
                 height: 100vh;
@@ -49,80 +37,83 @@
                 position: fixed;
                 top: 0;
                 left: 0;
+                grid-template-columns: 1fr !important;
             }
 
-            /* Ocultar segundo plato y maleta original */
+            /* Ocultar todo lo que no sea el plato 1 */
             .consola[data-plato="2"],
-            .consola-maleta {
+            .consola-maleta,
+            #cuadradoPortadaPrincipal,
+            #cuadradoInfoAlbum,
+            .controles-consola,
+            .dual-control,
+            .control-group,
+            .pitch-info {
                 display: none !important;
             }
 
-            /* Plato 1 ocupa la parte superior */
+            /* Plato 1 visible y compacto */
             .consola[data-plato="1"] {
-                flex: 0 0 auto;
+                display: flex !important;
+                flex-direction: column;
                 background: white;
                 padding: 10px;
-                border-bottom: 1px solid #eee;
+                height: auto;
+                flex: 0 0 auto;
             }
 
-            /* Info track compacto */
+            /* Info track */
             .info-track-consola {
                 font-size: 12px;
-                padding: 4px 8px;
-                margin-bottom: 5px;
-                background: #f5f5f5;
-                border-radius: 12px;
+                padding: 6px 10px;
+                margin-bottom: 8px;
+                background: #f0f0f0;
+                border-radius: 20px;
                 text-align: center;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
             }
 
-            /* Plato tamaño fijo proporcional */
+            /* Plato tamaño proporcional */
             .plato {
-                width: min(35vw, 35vh);
-                height: min(35vw, 35vh);
-                margin: 0 auto 5px auto;
-                aspect-ratio: 1/1;
+                width: min(40vw, 40vh);
+                height: min(40vw, 40vh);
+                margin: 0 auto 10px auto;
             }
 
-            /* Botón superior más pequeño */
+            /* Botones más pequeños */
             .boton-superior {
                 width: 40px !important;
                 height: 40px !important;
                 font-size: 20px !important;
-                top: 5px;
-                right: 5px;
             }
 
-            /* Botones play/stop más pequeños */
             .boton-plato {
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
                 font-size: 11px;
             }
 
-            /* RPM info */
-            .pitch-info {
-                font-size: 10px;
-                margin: 2px 0;
-            }
-
-            /* Ocultar barra de progreso gris */
+            /* Barra de progreso visible */
             .progress-container {
-                display: none !important;
+                display: block !important;
+                margin: 5px auto 10px auto;
+                width: 90%;
             }
 
-            /* ========================================
-               PESTAÑA DESLIZANTE
-               ======================================== */
+            .progress-bar {
+                height: 4px;
+            }
+
+            .progress-time {
+                font-size: 10px;
+            }
+
+            /* Pestaña */
             .movil-tab {
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
                 background: #f0f0f0;
-                padding: 6px 0;
-                margin: 0;
+                padding: 8px 0;
                 cursor: pointer;
                 font-size: 18px;
                 color: #666;
@@ -132,17 +123,7 @@
                 flex: 0 0 auto;
             }
 
-            /* Contenedor deslizante (ocupa el resto) */
-            #movilSlideContainer {
-                flex: 1 1 auto;
-                display: flex;
-                flex-direction: column;
-                overflow: hidden;
-                min-height: 0;
-                background: #fafafa;
-            }
-
-            /* Lista de canciones (deslizable internamente) */
+            /* Contenedor de la lista */
             #movilSongList {
                 flex: 1 1 auto;
                 overflow-y: auto;
@@ -151,24 +132,10 @@
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* Controles (ocultos por defecto) */
-            #movilControles {
-                flex: 1 1 auto;
-                overflow-y: auto;
-                padding: 15px;
-                background: #fafafa;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            #movilControles.hidden {
-                display: none;
-            }
-
             /* Items de la lista */
             .song-item {
                 padding: 8px !important;
                 margin: 5px 0 !important;
-                gap: 8px !important;
             }
 
             .song-number {
@@ -182,63 +149,28 @@
                 height: 35px !important;
             }
 
-            /* Grid colecciones - 2 columnas */
+            /* Modal colecciones - 2 columnas */
             #discosGrid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
-                padding: 10px !important;
-                max-height: 300px !important;
-            }
-
-            #discosGrid > div {
-                width: 100% !important;
-                max-width: none !important;
-            }
-
-            #discosGrid img {
-                width: 100% !important;
-                height: auto !important;
-                aspect-ratio: 1/1;
-            }
-
-            /* Quitar marcos de portada y créditos */
-            #cuadradoPortadaPrincipal,
-            #cuadradoInfoAlbum {
-                border: none !important;
-                background: transparent !important;
-                box-shadow: none !important;
-            }
-
-            #cuadradoPortadaPrincipal {
-                width: 80px !important;
-                height: 80px !important;
-            }
-
-            #cuadradoInfoAlbum {
-                width: calc(100% - 90px) !important;
-                height: 80px !important;
-                padding: 0 5px !important;
-            }
-
-            #albumTitulo, #albumArtista, #albumAnno {
-                color: #333 !important;
-            }
-
-            /* Footer compacto */
-            .maleta-footer {
-                display: none !important;
             }
         }
 
         /* ============================================
-           ESCRITORIO (se ve normal)
+           ESCRITORIO - Todo normal
            ============================================ */
         @media (min-width: 769px) {
             .movil-tab,
-            #movilSlideContainer,
-            #movilControles,
             #movilSongList {
                 display: none !important;
+            }
+            
+            .consola-maleta {
+                display: block !important;
+            }
+            
+            .consola[data-plato="2"] {
+                display: block !important;
             }
         }
     </style>
@@ -247,12 +179,10 @@
     <div class="consola-general">
         <!-- CONSOLA 1 (única visible en móvil) -->
         <div class="consola" data-plato="1">
-            <!-- Info track -->
             <div class="info-track-consola" id="infoTrack1">
                 <span class="sin-cargar">❌ Sin disco</span>
             </div>
             
-            <!-- Plato y disco -->
             <div class="plato">
                 <div class="boton-superior" id="btn-superior1">📀</div>
                 <div class="disco" id="disco1">
@@ -265,44 +195,68 @@
                     <div class="boton-plato stop" id="stop1">STOP</div>
                 </div>
                 
-                <!-- Punto de progreso -->
                 <div class="disco-progress-container" id="discoProgress1">
                     <div class="disco-progress-point" id="discoProgressPoint1"></div>
                 </div>
             </div>
             
-            <!-- RPM -->
-            <div class="pitch-info" id="rpm1">0 RPM</div>
-            
-            <!-- Cuadros de portada y álbum (sin marcos) -->
-            <div style="display: flex; gap: 10px; margin: 5px 0;">
-                <div id="cuadradoPortadaPrincipal">
-                    <span style="color: #999; font-size: 12px;">portada</span>
+            <!-- Barra de progreso -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar1">
+                    <div class="progress-fill" id="progress-fill1"></div>
                 </div>
-                
-                <div id="cuadradoInfoAlbum">
-                    <div style="font-weight: bold; color: #ff4444; font-size: 12px;">ÁLBUM</div>
-                    <div id="albumTitulo" style="font-size: 13px; font-weight: bold;">-</div>
-                    <div id="albumArtista" style="font-size: 11px; color: #666;">-</div>
-                    <div id="albumAnno" style="font-size: 10px; color: #999;">-</div>
+                <div class="progress-time">
+                    <span id="progress-current1">0:00</span>
+                    <span id="progress-total1">0:00</span>
                 </div>
             </div>
         </div>
 
-        <!-- PESTAÑA DESLIZANTE -->
+        <!-- PESTAÑA MÓVIL -->
         <div class="movil-tab" id="movilTab">▼</div>
 
-        <!-- CONTENEDOR DESLIZANTE -->
-        <div id="movilSlideContainer">
-            <!-- LISTA DE CANCIONES -->
-            <div id="movilSongList">
-                <div style="text-align: center; color: #999; padding: 20px;">
-                    📀 Arrastra archivos para comenzar
+        <!-- LISTA DE CANCIONES MÓVIL -->
+        <div id="movilSongList">
+            <div style="text-align: center; color: #999; padding: 20px;">
+                📀 Arrastra archivos para comenzar
+            </div>
+        </div>
+        
+        <!-- CONSOLA 2 (escritorio) -->
+        <div class="consola" data-plato="2">
+            <div class="info-track-consola" id="infoTrack2">
+                <span class="sin-cargar">❌ Sin disco</span>
+            </div>
+            
+            <div class="plato">
+                <div class="boton-superior" id="btn-superior2">📀</div>
+                <div class="disco" id="disco2">
+                    <div class="label" id="label2">🎵</div>
+                    <div class="linea"></div>
+                    <div class="linea2"></div>
+                </div>
+                <div class="plato-botones">
+                    <div class="boton-plato play" id="play2">Play</div>
+                    <div class="boton-plato stop" id="stop2">STOP</div>
+                </div>
+                
+                <div class="disco-progress-container" id="discoProgress2">
+                    <div class="disco-progress-point" id="discoProgressPoint2"></div>
                 </div>
             </div>
             
-            <!-- CONTROLES (ocultos inicialmente) -->
-            <div id="movilControles" class="hidden">
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar2">
+                    <div class="progress-fill" id="progress-fill2"></div>
+                </div>
+                <div class="progress-time">
+                    <span id="progress-current2">0:00</span>
+                    <span id="progress-total2">0:00</span>
+                </div>
+            </div>
+            
+            <!-- Controles completos para escritorio -->
+            <div class="controles-consola">
                 <div class="dual-control">
                     <div class="control-half">
                         <div class="control-header">
@@ -333,7 +287,51 @@
                 </div>
                 
                 <div class="control-group">
-                    <div class="control-header">PITCH</div>
+                    <div class="control-header">ECUALIZADOR</div>
+                    <div class="eq-container">
+                        <div class="eq-band">
+                            <div class="frecuencia">LOW</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill" id="eq1-low-fill"></div>
+                                    <div class="slider-center-marker"></div>
+                                </div>
+                                <input type="range" id="eq1-low" min="-12" max="12" value="0" step="0.5">
+                            </div>
+                            <div class="valor" id="eq1-low-val">0.0</div>
+                        </div>
+                        
+                        <div class="eq-band">
+                            <div class="frecuencia">MID</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill" id="eq1-mid-fill"></div>
+                                    <div class="slider-center-marker"></div>
+                                </div>
+                                <input type="range" id="eq1-mid" min="-12" max="12" value="0" step="0.5">
+                            </div>
+                            <div class="valor" id="eq1-mid-val">0.0</div>
+                        </div>
+                        
+                        <div class="eq-band">
+                            <div class="frecuencia">HIGH</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill" id="eq1-high-fill"></div>
+                                    <div class="slider-center-marker"></div>
+                                </div>
+                                <input type="range" id="eq1-high" min="-12" max="12" value="0" step="0.5">
+                            </div>
+                            <div class="valor" id="eq1-high-val">0.0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <div class="control-header">
+                        <span>PITCH</span>
+                        <span class="valor" id="pitch1-val">0</span>
+                    </div>
                     <div class="slider-container">
                         <div class="slider-track">
                             <div class="slider-fill" id="pitch1-fill"></div>
@@ -345,13 +343,37 @@
             </div>
         </div>
         
-        <!-- CONSOLA 2 (oculta en móvil) -->
-        <div class="consola" data-plato="2">
-            <!-- ... mismo contenido ... -->
+        <!-- MALETA (escritorio) -->
+        <div class="consola-maleta">
+            <div class="maleta-titulo">🍓 DISCO FRESA</div>
+            
+            <input type="file" id="file1" accept="audio/*" class="file-input-hidden">
+            <input type="file" id="file2" accept="audio/*" class="file-input-hidden">
+            
+            <div class="modo-selector-container">
+                <span class="modo-label">Manual</span>
+                
+                <div id="selectorModoContainer" class="modo-switch">
+                    <div class="modo-track"></div>
+                    <div id="selectorModoFill" class="modo-fill"></div>
+                    <div class="modo-center"></div>
+                    <div id="selectorModoThumb" class="modo-thumb"></div>
+                    <input type="range" id="selectorModoRange" min="0" max="1" value="0" step="1">
+                </div>
+                
+                <span class="modo-label">Auto</span>
+            </div>
+            
+            <div class="maleta-footer">
+                <div>🍓 <strong>DISCO FRESA</strong> v4.2</div>
+                <div>by Carlos Sánchez Sanz</div>
+                <div>
+                    <a href="https://github.com/carlospixie-max" target="_blank">GitHub: @carlospixie-max</a>
+                </div>
+                <div>carlospixie@gmail.com</div>
+                <div class="fecha">1 de marzo de 2026</div>
+            </div>
         </div>
-        
-        <!-- MALETA ORIGINAL (oculta en móvil) -->
-        <div class="consola-maleta" style="display: none;"></div>
     </div>
     
     <audio id="audio1"></audio>
@@ -377,13 +399,9 @@
         (function() {
             if (window.innerWidth <= 768) {
                 const tab = document.getElementById('movilTab');
-                const controles = document.getElementById('movilControles');
                 const songList = document.getElementById('movilSongList');
-                const slideContainer = document.getElementById('movilSlideContainer');
                 
-                if (tab && controles && songList) {
-                    let showingControls = false;
-                    
+                if (tab && songList) {
                     // Integrar con biblioteca.js
                     if (window.biblioteca) {
                         const originalUpdate = window.biblioteca.actualizarLista;
@@ -398,19 +416,8 @@
                         };
                     }
                     
-                    tab.addEventListener('click', function() {
-                        showingControls = !showingControls;
-                        
-                        if (showingControls) {
-                            controles.classList.remove('hidden');
-                            songList.style.display = 'none';
-                            tab.innerHTML = '▲';
-                        } else {
-                            controles.classList.add('hidden');
-                            songList.style.display = 'block';
-                            tab.innerHTML = '▼';
-                        }
-                    });
+                    // La pestaña ya no hace nada, la lista siempre visible
+                    tab.style.display = 'none';
                 }
             }
         })();
