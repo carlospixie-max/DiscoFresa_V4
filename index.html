@@ -1,132 +1,123 @@
 <!DOCTYPE html>
 <!-- 
     DISCO FRESA 🍓 by Carlos Sánchez Sanz
-    Email: carlospixie@gmail.com
-    GitHub: https://github.com/carlospixie-max
-    Versión: 4.0 (Adaptación móvil)
-    Fecha: 1 de marzo de 2026
+    Versión: 4.0 Móvil + Escritorio completo
 -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Disco Fresa 🍓</title>
-    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="css/styles.css">
-    
-    <!-- Estilos específicos para móvil (añadidos al final para no romper nada) -->
     <style>
         /* ============================================
-           DISCO FRESA - Versión Móvil (v4.0)
-           Solo se activa en pantallas pequeñas
+           ESTILOS MÓVIL (solo en pantallas pequeñas)
            ============================================ */
-        
         @media (max-width: 768px) {
-            /* Layout de una sola columna */
             .consola-general {
                 grid-template-columns: 1fr !important;
                 padding: 10px !important;
                 gap: 10px !important;
             }
             
-            /* Ocultar el segundo plato */
             .consola[data-plato="2"] {
                 display: none !important;
             }
             
-            /* Ajustar maleta */
-            .consola-maleta {
-                order: 2 !important;
-                margin-top: 0 !important;
-            }
-            
-            /* Ajustar plato 1 */
             .consola[data-plato="1"] {
-                order: 1 !important;
+                position: sticky;
+                top: 0;
+                z-index: 20;
+                background: white;
             }
             
-            /* Botón superior más grande para móvil */
             .boton-superior {
                 width: 50px !important;
                 height: 50px !important;
-                font-size: 20px !important;
+                font-size: 24px !important;
             }
             
-            /* ========================================
-               Pestaña deslizante
-               ======================================== */
+            .consola[data-plato="1"] .progress-container {
+                display: none !important;
+            }
+            
             .movil-tab {
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
                 background: #f0f0f0;
                 border-radius: 20px 20px 0 0;
-                padding: 8px 0;
-                margin-top: 10px;
+                padding: 10px 0;
+                margin: 5px 0 0 0;
                 cursor: pointer;
                 border: 1px solid #ddd;
                 border-bottom: none;
                 font-size: 20px;
                 color: #666;
-                transition: background 0.2s;
-                user-select: none;
+                width: 100%;
             }
             
-            .movil-tab:active {
-                background: #e0e0e0;
-            }
-            
-            /* Contenedor deslizante */
-            .movil-slide-container {
+            #movilControles {
+                background: #fafafa;
+                padding: 15px;
+                border-radius: 0 0 20px 20px;
+                border: 1px solid #ddd;
+                border-top: none;
                 transition: transform 0.3s ease;
-                transform: translateY(0);
+                margin-top: -1px;
             }
             
-            .movil-slide-container.hidden {
-                transform: translateY(calc(100% - 50px));
+            #movilControles.hidden {
+                display: none;
             }
             
-            /* Ocultar barra de progreso gris en móvil (usamos el punto del disco) */
-            .consola[data-plato="1"] .progress-container {
-                display: none !important;
+            #movilSongList {
+                background: white;
+                border-radius: 0 0 20px 20px;
+                border: 1px solid #ddd;
+                border-top: none;
+                padding: 10px;
+                max-height: 400px;
+                overflow-y: auto;
+                margin-top: -1px;
             }
             
-            /* Ajustar grid de colecciones (2 columnas) */
             #discosGrid {
                 grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
             }
             
-            /* Ajustar tamaño de portadas en colecciones */
-            #discosGrid > div {
-                width: 100% !important;
-                max-width: 140px;
-                margin: 0 auto !important;
-            }
-            
-            /* Ajustar cuadrados de información */
-            #cuadradoPortadaPrincipal,
-            #cuadradoInfoAlbum {
-                width: 140px !important;
-                height: 140px !important;
-            }
-            
-            /* Ajustar footer */
-            .maleta-footer {
-                font-size: 9px !important;
+            /* Ocultar maleta original en móvil */
+            .consola-maleta {
+                display: none !important;
             }
         }
         
+        /* ============================================
+           ESCRITORIO (pantallas grandes)
+           ============================================ */
         @media (min-width: 769px) {
-            .movil-tab {
+            .movil-tab,
+            #movilControles,
+            #movilSongList {
                 display: none !important;
+            }
+            
+            .consola-maleta {
+                display: block !important;
+            }
+            
+            .consola[data-plato="2"] {
+                display: block !important;
             }
         }
     </style>
 </head>
 <body>
     <div class="consola-general">
-        <!-- CONSOLA 1 (izquierda) - Única visible en móvil -->
+        <!-- ======================================== -->
+        <!-- CONSOLA 1 (izquierda) - Completa siempre -->
+        <!-- ======================================== -->
         <div class="consola" data-plato="1">
             <div class="info-track-consola" id="infoTrack1">
                 <span class="sin-cargar">❌ Sin disco</span>
@@ -143,7 +134,6 @@
                     <div class="boton-plato play" id="play1">Play</div>
                     <div class="boton-plato stop" id="stop1">STOP</div>
                 </div>
-                
                 <div class="disco-progress-container" id="discoProgress1">
                     <div class="disco-progress-point" id="discoProgressPoint1"></div>
                 </div>
@@ -151,6 +141,7 @@
             
             <div class="pitch-info" id="rpm1">0 RPM</div>
             
+            <!-- Barra de progreso (visible en escritorio, oculta en móvil por CSS) -->
             <div class="progress-container">
                 <div class="progress-bar" id="progress-bar1">
                     <div class="progress-fill" id="progress-fill1"></div>
@@ -161,99 +152,112 @@
                 </div>
             </div>
             
-            <!-- Controles deslizables (se ocultan/muestran con la pestaña) -->
-            <div class="movil-slide-container" id="movilSlideContainer">
-                <div class="movil-tab" id="movilTab">▼</div>
-                
-                <div class="controles-consola" id="movilControles">
-                    <div class="dual-control">
-                        <div class="control-half">
-                            <div class="control-header">
-                                <span>GANANCIA</span>
-                                <span class="valor" id="gain1-val">0.0</span>
-                            </div>
-                            <div class="slider-container">
-                                <div class="slider-track">
-                                    <div class="slider-fill" id="gain1-fill"></div>
-                                    <div class="slider-center-marker"></div>
-                                </div>
-                                <input type="range" id="gain1" min="-12" max="12" value="0" step="0.5">
-                            </div>
-                        </div>
-                        
-                        <div class="control-half">
-                            <div class="control-header">
-                                <span>VOLUMEN</span>
-                                <span class="valor" id="vol1-val">70</span>
-                            </div>
-                            <div class="slider-container">
-                                <div class="slider-track">
-                                    <div class="slider-fill" id="vol1-fill"></div>
-                                </div>
-                                <input type="range" id="vol1" min="0" max="100" value="70" step="1">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <div class="control-header">ECUALIZADOR</div>
-                        <div class="eq-container">
-                            <div class="eq-band">
-                                <div class="frecuencia">LOW</div>
-                                <div class="slider-container">
-                                    <div class="slider-track">
-                                        <div class="slider-fill" id="eq1-low-fill"></div>
-                                        <div class="slider-center-marker"></div>
-                                    </div>
-                                    <input type="range" id="eq1-low" min="-12" max="12" value="0" step="0.5">
-                                </div>
-                                <div class="valor" id="eq1-low-val">0.0</div>
-                            </div>
-                            
-                            <div class="eq-band">
-                                <div class="frecuencia">MID</div>
-                                <div class="slider-container">
-                                    <div class="slider-track">
-                                        <div class="slider-fill" id="eq1-mid-fill"></div>
-                                        <div class="slider-center-marker"></div>
-                                    </div>
-                                    <input type="range" id="eq1-mid" min="-12" max="12" value="0" step="0.5">
-                                </div>
-                                <div class="valor" id="eq1-mid-val">0.0</div>
-                            </div>
-                            
-                            <div class="eq-band">
-                                <div class="frecuencia">HIGH</div>
-                                <div class="slider-container">
-                                    <div class="slider-track">
-                                        <div class="slider-fill" id="eq1-high-fill"></div>
-                                        <div class="slider-center-marker"></div>
-                                    </div>
-                                    <input type="range" id="eq1-high" min="-12" max="12" value="0" step="0.5">
-                                </div>
-                                <div class="valor" id="eq1-high-val">0.0</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
+            <!-- Pestaña móvil (solo visible en móvil) -->
+            <div class="movil-tab" id="movilTab">▼</div>
+            
+            <!-- Lista móvil (solo visible en móvil) -->
+            <div id="movilSongList">
+                <div style="text-align: center; color: #999; padding: 20px;">
+                    📀 Arrastra archivos para comenzar
+                </div>
+            </div>
+            
+            <!-- Controles móviles (solo visible en móvil) -->
+            <div id="movilControles" class="hidden">
+                <div class="dual-control">
+                    <div class="control-half">
                         <div class="control-header">
-                            <span>PITCH</span>
-                            <span class="valor" id="pitch1-val">0</span>
+                            <span>GANANCIA</span>
+                            <span class="valor" id="gain1-val">0.0</span>
                         </div>
                         <div class="slider-container">
                             <div class="slider-track">
-                                <div class="slider-fill" id="pitch1-fill"></div>
+                                <div class="slider-fill" id="gain1-fill"></div>
                                 <div class="slider-center-marker"></div>
                             </div>
-                            <input type="range" id="pitch1" min="0.90" max="1.10" step="0.001" value="1.0">
+                            <input type="range" id="gain1" min="-12" max="12" value="0" step="0.5">
+                        </div>
+                    </div>
+                    
+                    <div class="control-half">
+                        <div class="control-header">
+                            <span>VOLUMEN</span>
+                            <span class="valor" id="vol1-val">70</span>
+                        </div>
+                        <div class="slider-container">
+                            <div class="slider-track">
+                                <div class="slider-fill" id="vol1-fill"></div>
+                            </div>
+                            <input type="range" id="vol1" min="0" max="100" value="70" step="1">
                         </div>
                     </div>
                 </div>
+                
+                <div class="control-group">
+                    <div class="control-header">ECUALIZADOR</div>
+                    <div class="eq-container">
+                        <div class="eq-band">
+                            <div class="frecuencia">LOW</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill" id="eq1-low-fill"></div>
+                                    <div class="slider-center-marker"></div>
+                                </div>
+                                <input type="range" id="eq1-low" min="-12" max="12" value="0" step="0.5">
+                            </div>
+                            <div class="valor" id="eq1-low-val">0.0</div>
+                        </div>
+                        
+                        <div class="eq-band">
+                            <div class="frecuencia">MID</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill" id="eq1-mid-fill"></div>
+                                    <div class="slider-center-marker"></div>
+                                </div>
+                                <input type="range" id="eq1-mid" min="-12" max="12" value="0" step="0.5">
+                            </div>
+                            <div class="valor" id="eq1-mid-val">0.0</div>
+                        </div>
+                        
+                        <div class="eq-band">
+                            <div class="frecuencia">HIGH</div>
+                            <div class="slider-container">
+                                <div class="slider-track">
+                                    <div class="slider-fill" id="eq1-high-fill"></div>
+                                    <div class="slider-center-marker"></div>
+                                </div>
+                                <input type="range" id="eq1-high" min="-12" max="12" value="0" step="0.5">
+                            </div>
+                            <div class="valor" id="eq1-high-val">0.0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <div class="control-header">
+                        <span>PITCH</span>
+                        <span class="valor" id="pitch1-val">0</span>
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-track">
+                            <div class="slider-fill" id="pitch1-fill"></div>
+                            <div class="slider-center-marker"></div>
+                        </div>
+                        <input type="range" id="pitch1" min="0.90" max="1.10" step="0.001" value="1.0">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controles escritorio (visibles siempre, pero en móvil están dentro de movilControles) -->
+            <div class="controles-consola escritorio-only">
+                <!-- No duplicamos, ya están arriba -->
             </div>
         </div>
         
-        <!-- CONSOLA MALETA (centro) -->
+        <!-- ======================================== -->
+        <!-- CONSOLA MALETA (centro) - Visible en escritorio -->
+        <!-- ======================================== -->
         <div class="consola-maleta">
             <div class="maleta-titulo">🍓 DISCO FRESA</div>
             
@@ -274,6 +278,8 @@
                 <span class="modo-label">Auto</span>
             </div>
             
+            <!-- Aquí se inyecta la biblioteca desde biblioteca.js -->
+            
             <div class="maleta-footer">
                 <div>🍓 <strong>DISCO FRESA</strong> v4.0</div>
                 <div>by Carlos Sánchez Sanz</div>
@@ -285,7 +291,9 @@
             </div>
         </div>
         
-        <!-- CONSOLA 2 (derecha) - Oculto en móvil -->
+        <!-- ======================================== -->
+        <!-- CONSOLA 2 (derecha) - Completa siempre -->
+        <!-- ======================================== -->
         <div class="consola" data-plato="2">
             <div class="info-track-consola" id="infoTrack2">
                 <span class="sin-cargar">❌ Sin disco</span>
@@ -320,6 +328,7 @@
                 </div>
             </div>
             
+            <!-- Controles completos del plato 2 -->
             <div class="controles-consola">
                 <div class="dual-control">
                     <div class="control-half">
@@ -414,7 +423,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="js/config.js"></script>
-    <!-- Módulos de maleta.js (divididos) -->
     <script src="js/maleta-utils.js"></script>
     <script src="js/maleta-core.js"></script>
     <script src="js/maleta-ui.js"></script>
@@ -428,24 +436,41 @@
     <script src="js/app.js"></script>
     <script src="js/main.js"></script>
     
-    <!-- Script para la pestaña deslizante -->
     <script>
         (function() {
-            // Solo ejecutar en móvil
+            // Script para la pestaña móvil
             if (window.innerWidth <= 768) {
                 const tab = document.getElementById('movilTab');
-                const container = document.getElementById('movilSlideContainer');
+                const controles = document.getElementById('movilControles');
+                const songList = document.getElementById('movilSongList');
                 
-                if (tab && container) {
-                    let isHidden = false;
+                if (tab && controles && songList) {
+                    let showingControls = false;
+                    
+                    // Integrar con biblioteca.js
+                    if (window.biblioteca) {
+                        const originalUpdate = window.biblioteca.actualizarLista;
+                        window.biblioteca.actualizarLista = function() {
+                            originalUpdate.call(this);
+                            const originalList = document.getElementById('songListBiblioteca');
+                            if (originalList && originalList.children.length > 0) {
+                                songList.innerHTML = originalList.innerHTML;
+                            } else {
+                                songList.innerHTML = '<div style="text-align: center; color: #999; padding: 20px;">📀 Arrastra archivos para comenzar</div>';
+                            }
+                        };
+                    }
                     
                     tab.addEventListener('click', function() {
-                        isHidden = !isHidden;
-                        if (isHidden) {
-                            container.classList.add('hidden');
+                        showingControls = !showingControls;
+                        
+                        if (showingControls) {
+                            controles.classList.remove('hidden');
+                            songList.style.display = 'none';
                             tab.innerHTML = '▲';
                         } else {
-                            container.classList.remove('hidden');
+                            controles.classList.add('hidden');
+                            songList.style.display = 'block';
                             tab.innerHTML = '▼';
                         }
                     });
